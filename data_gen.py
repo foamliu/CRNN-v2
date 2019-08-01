@@ -56,7 +56,7 @@ class Ic2015Dataset(Dataset):
         img = transforms.ToPILImage()(img)
         img = self.transformer(img)
 
-        label = str(tokens[1].strip())
+        label = str(tokens[1].strip('"'))
 
         return img, label
 
