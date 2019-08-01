@@ -94,7 +94,7 @@ def train_net(args):
         writer.add_scalar('Test_Accuracy', test_acc, epoch)
 
         # Check if there was an improvement
-        is_best = test_loss > best_loss
+        is_best = test_loss < best_loss
         best_loss = min(test_loss, best_loss)
         if not is_best:
             epochs_since_improvement += 1
