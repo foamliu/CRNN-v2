@@ -89,3 +89,6 @@ if __name__ == "__main__":
     alphabet = sorted(list(alphabet))
     print('alphabet: ' + str(alphabet))
     print('alphabet: ' + ''.join(alphabet))
+
+    data = Ic2015Dataset('train')
+    print(data[0])

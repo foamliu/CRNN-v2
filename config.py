@@ -11,7 +11,7 @@ max_target_len = 25
 nc = 3
 nh = 256
 
-alphabet = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+alphabet = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !\"#$%&\'()+-./:;=?@[\\]'
 nclass = len(alphabet) + 1
 
 dict = {}
