@@ -8,7 +8,7 @@ from torch.autograd import Variable
 from torchvision import transforms
 
 import utils
-from config import device, imgH, imgW, IMG_FOLDER, converter
+from config import device, imgH, imgW, image_folders, converter
 from data_gen import data_transforms
 
 if __name__ == "__main__":
@@ -21,7 +21,8 @@ if __name__ == "__main__":
     output_dir = 'images'
     utils.ensure_folder(output_dir)
 
-    transformer = data_transforms['val']
+    transformer = data_transforms['test']
+    image_folder = image_folders['test']
 
     im_fn_list = utils.get_images_for_test()
     im_fn_list = random.sample(im_fn_list, 10)
@@ -31,7 +32,7 @@ if __name__ == "__main__":
     for idx in range(len(im_fn_list)):
         im_fn = im_fn_list[idx]
         print('filename: ' + im_fn)
-        im_fn = os.path.join(IMG_FOLDER, im_fn)
+        im_fn = os.path.join(image_folder, im_fn)
         img = cv.imread(im_fn)
         cv.imwrite('images/img_{}.jpg'.format(idx), img)
         img = cv.resize(img, (imgW, imgH), cv.INTER_CUBIC)
