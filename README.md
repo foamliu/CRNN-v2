@@ -41,13 +41,13 @@ $ python demo.py
 
 Image| Word|
 |----|----|
-|![image](https://github.com/foamliu/CRNN/raw/master/images/img_0.jpg)|m----a--r-a-s-c--h-i-n--o- => maraschino          |
-|![image](https://github.com/foamliu/CRNN/raw/master/images/img_1.jpg)|h--------e----i---d----i-- => heidi               |
-|![image](https://github.com/foamliu/CRNN/raw/master/images/img_2.jpg)|u-------n-iiff--i-e---d--- => unified             |
-|![image](https://github.com/foamliu/CRNN/raw/master/images/img_3.jpg)|t-----u---s--s-a---u---d-- => tussaud             |
-|![image](https://github.com/foamliu/CRNN/raw/master/images/img_4.jpg)|s---c-r-a--p-h--e-a--p--s- => scrapheaps          |
-|![image](https://github.com/foamliu/CRNN/raw/master/images/img_5.jpg)|f---l--u--f--f-i-nn-e--s-s => fluffiness          |
-|![image](https://github.com/foamliu/CRNN/raw/master/images/img_6.jpg)|r---e---o-r--ie--n-t--e-d- => reoriented          |
-|![image](https://github.com/foamliu/CRNN/raw/master/images/img_7.jpg)|b-------l-o---o----p---s-- => bloops              |
-|![image](https://github.com/foamliu/CRNN/raw/master/images/img_8.jpg)|d----e-s--p--e--r-a--t--e- => desperate           |
-|![image](https://github.com/foamliu/CRNN/raw/master/images/img_9.jpg)|s----h-o--w--g--r-o-u-n-d- => showground          |
+|![image](https://github.com/foamliu/CRNN-v2/raw/master/images/img_0.jpg)|AA-----------------------E => AE                  |
+|![image](https://github.com/foamliu/CRNN-v2/raw/master/images/img_1.jpg)|OO----P--TTTI--O--N------S => OPTIONS             |
+|![image](https://github.com/foamliu/CRNN-v2/raw/master/images/img_2.jpg)|CH-------R--SS-T----A----S => CHRSTAS             |
+|![image](https://github.com/foamliu/CRNN-v2/raw/master/images/img_3.jpg)|AA-----------------------N => AN                  |
+|![image](https://github.com/foamliu/CRNN-v2/raw/master/images/img_4.jpg)|DR---------C--H---AA-----R => DRCHAR              |
+|![image](https://github.com/foamliu/CRNN-v2/raw/master/images/img_5.jpg)|Ui-----nm--e-r-n-asss----s => Uinmernass          |
+|![image](https://github.com/foamliu/CRNN-v2/raw/master/images/img_6.jpg)|TI----------------E------A => TIEA                |
+|![image](https://github.com/foamliu/CRNN-v2/raw/master/images/img_7.jpg)|Cu-----------------------e => Cue                 |
+|![image](https://github.com/foamliu/CRNN-v2/raw/master/images/img_8.jpg)|Se------rc-i-n-gp-o-o----n => Sercingpoon         |
+|![image](https://github.com/foamliu/CRNN-v2/raw/master/images/img_9.jpg)|SAL----------------------E => SALE                |
