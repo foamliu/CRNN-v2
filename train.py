@@ -12,8 +12,6 @@ import utils
 from config import device, grad_clip, print_freq, num_workers, imgH, nc, nclass, nh, max_target_len
 from models import CRNN
 
-num_updates = 0
-
 
 def train_net(args):
     manual_seed = 7
@@ -73,17 +71,19 @@ def train_net(args):
     # Epochs
     for epoch in range(start_epoch, args.end_epoch):
         # One epoch's training
-        train(train_loader=train_loader,
-              model=model,
-              criterion=criterion,
-              optimizer=optimizer,
-              epoch=epoch,
-              logger=logger,
-              writer=writer)
+        train_loss, train_acc = train(train_loader=train_loader,
+                                      model=model,
+                                      criterion=criterion,
+                                      optimizer=optimizer,
+                                      epoch=epoch,
+                                      logger=logger)
         effective_lr = utils.get_learning_rate(optimizer)
         print('\nCurrent effective learning rate: {}\n'.format(effective_lr))
 
         writer.add_scalar('Learning_Rate', effective_lr, epoch)
+
+        writer.add_scalar('Train_Loss', train_loss, epoch)
+        writer.add_scalar('Train_Accuracy', train_acc, epoch)
 
         # One epoch's validation
         test_loss, test_acc = test(test_loader=test_loader,
@@ -106,7 +106,7 @@ def train_net(args):
         utils.save_checkpoint(epoch, epochs_since_improvement, model, optimizer, best_acc, is_best)
 
 
-def train(train_loader, model, criterion, optimizer, epoch, writer, logger):
+def train(train_loader, model, criterion, optimizer, epoch, logger):
     model.train()  # train mode (dropout and batchnorm is used)
 
     losses = utils.AverageMeter()
@@ -146,17 +146,12 @@ def train(train_loader, model, criterion, optimizer, epoch, writer, logger):
         losses.update(loss.item(), batch_size)
         accs.update(acc, batch_size)
 
-        global num_updates
-        num_updates += 1
-
         # Print status
         if i % print_freq == 0:
             logger.info('Epoch: [{0}][{1}/{2}]\t'
                         'Loss {loss.val:.4f} ({loss.avg:.4f})\t'
                         'Accuracy {acc.val:.4f} ({acc.avg:.4f})'.format(epoch, i, len(train_loader), loss=losses,
                                                                         acc=accs))
-            writer.add_scalar('Train_Loss', loss.item(), num_updates)
-            writer.add_scalar('Train_Accuracy', acc, num_updates)
 
     return losses.avg, accs.avg
 
