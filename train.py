@@ -20,7 +20,7 @@ def train_net(args):
     torch.manual_seed(manual_seed)
     checkpoint = args.checkpoint
     start_epoch = 0
-    best_acc = 0
+    best_acc = float('-inf')
     writer = SummaryWriter()
     epochs_since_improvement = 0
 

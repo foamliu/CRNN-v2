@@ -74,17 +74,13 @@ def get_learning_rate(optimizer):
 
 def accuracy(inputs, input_lengths, labels, batch_size):
     n_correct = 0
-    # print(preds.size())
     _, inputs = inputs.max(2)
-    # print(preds.size())
-    # preds = preds.squeeze(2)
     inputs = inputs.transpose(1, 0).contiguous().view(-1)
     sim_preds = converter.decode(inputs.data, input_lengths.data, raw=False)
     for pred, target in zip(sim_preds, labels):
         if pred == target:
             n_correct += 1
-    accuracy = n_correct / float(batch_size)
-    return accuracy
+    return n_correct / float(batch_size)
 
 
 def parse_args():
@@ -141,5 +137,5 @@ def get_images_for_test():
     with open(annotation_file, 'r') as file:
         lines = file.readlines()
 
-    image_paths = [line.split(' ')[0] for line in lines]
+    image_paths = [line.split(',')[0].strip() for line in lines]
     return image_paths
