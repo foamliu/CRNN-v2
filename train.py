@@ -20,7 +20,7 @@ def train_net(args):
     torch.manual_seed(manual_seed)
     checkpoint = args.checkpoint
     start_epoch = 0
-    best_acc = float('-inf')
+    best_loss = float('inf')
     writer = SummaryWriter()
     epochs_since_improvement = 0
 
@@ -94,8 +94,8 @@ def train_net(args):
         writer.add_scalar('Test_Accuracy', test_acc, epoch)
 
         # Check if there was an improvement
-        is_best = test_acc > best_acc
-        best_acc = max(test_acc, best_acc)
+        is_best = test_loss > best_loss
+        best_loss = min(test_loss, best_loss)
         if not is_best:
             epochs_since_improvement += 1
             print("\nEpochs since last improvement: %d\n" % (epochs_since_improvement,))
@@ -103,7 +103,7 @@ def train_net(args):
             epochs_since_improvement = 0
 
         # Save checkpoint
-        utils.save_checkpoint(epoch, epochs_since_improvement, model, optimizer, best_acc, is_best)
+        utils.save_checkpoint(epoch, epochs_since_improvement, model, optimizer, best_loss, is_best)
 
 
 def train(train_loader, model, criterion, optimizer, epoch, logger):
