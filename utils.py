@@ -123,7 +123,14 @@ def ensure_folder(folder):
 
 
 def encode_target(target):
-    return [dict[c] for c in target] + [0] * (max_target_len - len(target))
+    return [safe_get(dict, c) for c in target] + [0] * (max_target_len - len(target))
+
+
+def safe_get(dict, c):
+    if c in dict:
+        return dict[c]
+    else:
+        return 0
 
 
 def get_images_for_test():
