@@ -1,8 +1,7 @@
-import params
 import torch.nn as nn
 from torchsummary import summary
 
-from config import device
+from config import device, dealwith_lossnone
 
 
 class BidirectionalLSTM(nn.Module):
@@ -70,7 +69,7 @@ class CRNN(nn.Module):
             BidirectionalLSTM(nh, nh, nclass))
 
         # replace all nan/inf in gradients to zero
-        if params.dealwith_lossnone:
+        if dealwith_lossnone:
             self.register_backward_hook(self.backward_hook)
 
     def forward(self, input):

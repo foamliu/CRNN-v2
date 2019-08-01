@@ -110,3 +110,5 @@ num_workers = 4  # for data-loading
 grad_clip = 5.  # clip gradients at an absolute value of
 print_freq = 10  # print training/validation stats  every __ batches
 checkpoint = None  # path to checkpoint, None if none
+
+dealwith_lossnone = True
