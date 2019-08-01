@@ -22,7 +22,7 @@ def train_net(args):
     torch.manual_seed(manual_seed)
     checkpoint = args.checkpoint
     start_epoch = 0
-    best_loss = float('inf')
+    best_acc = 0
     writer = SummaryWriter()
     epochs_since_improvement = 0
 
@@ -63,12 +63,12 @@ def train_net(args):
     criterion = nn.CTCLoss(reduction='mean').to(device)
 
     # Custom dataloaders
-    train_dataset = data_gen.MJSynthDataset('train')
+    train_dataset = data_gen.Ic2015Dataset('train')
     train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True,
                                                num_workers=num_workers)
-    valid_dataset = data_gen.MJSynthDataset('val')
-    valid_loader = torch.utils.data.DataLoader(valid_dataset, batch_size=args.batch_size, shuffle=False,
-                                               num_workers=num_workers)
+    test_dataset = data_gen.Ic2015Dataset('test')
+    test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=args.batch_size, shuffle=False,
+                                              num_workers=num_workers)
 
     # Epochs
     for epoch in range(start_epoch, args.end_epoch):
@@ -86,16 +86,16 @@ def train_net(args):
         writer.add_scalar('Learning_Rate', effective_lr, epoch)
 
         # One epoch's validation
-        valid_loss, valid_acc = valid(valid_loader=valid_loader,
-                                      model=model,
-                                      criterion=criterion,
-                                      logger=logger)
-        writer.add_scalar('Validation_Loss', valid_loss, epoch)
-        writer.add_scalar('Validation_Accuracy', valid_acc, epoch)
+        test_loss, test_acc = test(test_loader=test_loader,
+                                   model=model,
+                                   criterion=criterion,
+                                   logger=logger)
+        writer.add_scalar('Test_Loss', test_loss, epoch)
+        writer.add_scalar('Test_Accuracy', test_acc, epoch)
 
         # Check if there was an improvement
-        is_best = valid_loss < best_loss
-        best_loss = max(valid_loss, best_loss)
+        is_best = test_acc > best_acc
+        best_acc = max(test_acc, best_acc)
         if not is_best:
             epochs_since_improvement += 1
             print("\nEpochs since last improvement: %d\n" % (epochs_since_improvement,))
@@ -103,7 +103,7 @@ def train_net(args):
             epochs_since_improvement = 0
 
         # Save checkpoint
-        utils.save_checkpoint(epoch, epochs_since_improvement, model, optimizer, best_loss, is_best)
+        utils.save_checkpoint(epoch, epochs_since_improvement, model, optimizer, best_acc, is_best)
 
 
 def train(train_loader, model, criterion, optimizer, epoch, writer, logger):
@@ -161,14 +161,14 @@ def train(train_loader, model, criterion, optimizer, epoch, writer, logger):
     return losses.avg, accs.avg
 
 
-def valid(valid_loader, model, criterion, logger):
+def test(test_loader, model, criterion, logger):
     model.eval()  # eval mode (dropout and batchnorm is not effective)
 
     losses = utils.AverageMeter()
     accs = utils.AverageMeter()
 
     # Batches
-    for images, labels in tqdm(valid_loader):
+    for images, labels in tqdm(test_loader):
         # Move to GPU, if available
         images = images.to(device)
         batch_size = images.size(0)

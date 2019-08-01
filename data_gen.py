@@ -4,7 +4,7 @@ import cv2 as cv
 import torchvision.transforms as transforms
 from torch.utils.data import Dataset
 
-from config import IMG_FOLDER, annotation_files, imgH, imgW
+from config import image_folders, annotation_files, imgH, imgW
 
 # Data augmentation and normalization for training
 # Just normalization for validation
@@ -14,20 +14,21 @@ data_transforms = {
         transforms.ToTensor(),
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
     ]),
-    'val': transforms.Compose([
+    'test': transforms.Compose([
         transforms.ToTensor(),
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ]),
 }
 
 
-class MJSynthDataset(Dataset):
+class Ic2015Dataset(Dataset):
 
     def __init__(self, split):
-        annotation_file = annotation_files[split]
+        self.annotation_file = annotation_files[split]
+        self.image_folder = image_folders[split]
 
         print('loading {} annotation data...'.format(split))
-        with open(annotation_file, 'r') as file:
+        with open(self.annotation_file, 'r') as file:
             self.lines = file.readlines()
 
         self.transformer = data_transforms[split]
@@ -46,17 +47,18 @@ class MJSynthDataset(Dataset):
 
     def get_data_record(self, i):
         line = self.lines[i]
-        img_path = line.split(' ')[0]
-        img_path = os.path.join(IMG_FOLDER, img_path)
+        tokens = line.split(',')
+        img_path = tokens[0].strip()
+        img_path = os.path.join(self.image_folder, img_path)
         img = cv.imread(img_path)
         img = cv.resize(img, (imgW, imgH), cv.INTER_CUBIC)
         img = img[..., ::-1]  # RGB
         img = transforms.ToPILImage()(img)
         img = self.transformer(img)
 
-        text = str(img_path.split('_')[1])
+        label = str(tokens[1].strip())
 
-        return img, text
+        return img, label
 
 
 if __name__ == "__main__":
@@ -71,8 +73,8 @@ if __name__ == "__main__":
     alphabet = set()
 
     for line in tqdm(lines):
-        img_path = line.split(' ')[0]
-        label = str(img_path.split('_')[1])
+        tokens = line.split(',')
+        label = str(tokens[1].strip())
         lengths.append(len(label))
         alphabet = alphabet | set(label)
 
@@ -84,3 +86,5 @@ if __name__ == "__main__":
 
     print('len(alphabet): ' + str(len(alphabet)))
     print('max(lengths): ' + str(max(lengths)))
+    alphabet = sorted(list(alphabet))
+    print('alphabet: ' + str(alphabet))

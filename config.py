@@ -99,11 +99,11 @@ class strLabelConverter(object):
 
 converter = strLabelConverter(alphabet=alphabet, ignore_case=False)
 
-IMG_FOLDER = 'mnt/ramdisk/max/90kDICT32px/'
+image_folders = {'train': 'data/ch4_training_word_images_gt/',
+                 'test': 'data/ch4_test_word_images_gt/'}
 
-annotation_files = {'train': 'mnt/ramdisk/max/90kDICT32px/annotation_train.txt',
-                    'val': 'mnt/ramdisk/max/90kDICT32px/annotation_val.txt',
-                    'test': 'mnt/ramdisk/max/90kDICT32px/annotation_test.txt'}
+annotation_files = {'train': 'data/ch4_training_word_images_gt/gt.txt',
+                    'test': 'data/Challenge4_Test_Task3_GT.txt'}
 
 # Training parameters
 num_workers = 4  # for data-loading
