@@ -88,3 +88,4 @@ if __name__ == "__main__":
     print('max(lengths): ' + str(max(lengths)))
     alphabet = sorted(list(alphabet))
     print('alphabet: ' + str(alphabet))
+    print('alphabet: ' + ''.join(alphabet))
