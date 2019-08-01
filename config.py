@@ -108,5 +108,5 @@ annotation_files = {'train': 'data/ch4_training_word_images_gt/gt.txt',
 # Training parameters
 num_workers = 4  # for data-loading
 grad_clip = 5.  # clip gradients at an absolute value of
-print_freq = 500  # print training/validation stats  every __ batches
+print_freq = 10  # print training/validation stats  every __ batches
 checkpoint = None  # path to checkpoint, None if none
